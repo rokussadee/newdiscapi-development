@@ -1,0 +1,41 @@
+#version: "3.8" no longer needed
+volumes:
+  db:
+
+services:
+  app:
+    container_name: discjunk_api 
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=${PORT}
+      - MONGODB_DB=${MONGODB_DB}
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - REDIRECTURI=${REDIRECTURI}
+      - CLIENT_REDIRECTURI=${CLIENT_REDIRECTURI}
+      - MONGO_USERID=${MONGO_USERID}
+      - MONGO_USERPASS=${MONGO_USERPASS}
+    volumes:
+      - .:/app
+      # if you comment out the line below, you will have to run npm install locally
+      - /app/node_modules
+    depends_on:
+      - db
+    links:
+      - db
+
+  db:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    volumes:
+      - db:/data/db
+    command: mongod
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERID}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_USERPASS}
+      MONGO_INITDB_DATABASE: ${MONGODB_DB}
+    ports:
+      - 27017:27017
