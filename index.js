@@ -3,8 +3,8 @@ const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
 const options = {
-  key: fs.readFileSync(process.env.KEY),
-  cert: fs.readFileSync(process.env.CERT),
+  key: fs.readFileSync('./localhost-key.pem'),
+  cert: fs.readFileSync('./localhost.pem'),
 };
 require('dotenv').config();
 const app = express();
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true}))
 app.use(cors({
   origin: ['https://rokussadee.github.io', 'https://localhost:3000'], // Replace with your front-end domain
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Enable cookies and authentication headers
+  credentials: false, // Enable cookies and authentication headers
 }))
 
 const AuthRoutes = require('./routes/authRoutes.js');
