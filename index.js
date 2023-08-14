@@ -1,11 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const https = require('https');
-const fs = require('fs');
-const options = {
-  key: fs.readFileSync('./localhost-key.pem'),
-  cert: fs.readFileSync('./localhost.pem'),
-};
+//const https = require('https');
+//const fs = require('fs');
+//const options = {
+//  key: fs.readFileSync('./localhost-key.pem'),
+//  cert: fs.readFileSync('./localhost.pem'),
+//};
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 8888
@@ -21,7 +21,7 @@ const port = process.env.PORT || 8888
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
 app.use(cors({
-  origin: ['https://rokussadee.github.io', 'https://localhost:3000'], // Replace with your front-end domain
+  origin: ['https://rokussadee.github.io', 'https://dj-vercel-api.vercel.app', 'https://localhost:3000'], // Replace with your front-end domain
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: false, // Enable cookies and authentication headers
 }))
@@ -38,9 +38,9 @@ app.use('/crud', cors(), CrudRoutes)
 const DiscogsRoutes = require('./routes/discogsRoutes.js');
 app.use('/discogs', cors(), DiscogsRoutes);
 
-let httpsServer = https.createServer(options, app);
+//let httpsServer = https.createServer(options, app);
 
-httpsServer.listen(port, () => {
+app.listen(port, () => {
   console.log(`app listening at https://localhost:${port}`)
 })
 
